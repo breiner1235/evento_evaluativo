@@ -1,0 +1,14 @@
+def mostrar_indices(n, m, base=0):
+    """Imprime TODOS los índices (i,j) en UNA sola línea (horizontal)."""
+    pares = []
+    for i in range(n):
+        for j in range(m):
+            pares.append(f"({i+base},{j+base})")
+    print(" ".join(pares))
+
+# Ejemplo rápido:
+if __name__ == "__main__":
+    n = int(input("Filas (n): "))
+    m = int(input("Columnas (m): "))
+    mostrar_indices(n, m)        # 0-based (0..n-1, 0..m-1)
+    # mostrar_indices(n, m, 1)   # 1-based si tu profe lo prefiere
