@@ -1,0 +1,91 @@
+import random
+
+def crear_tablero(tamano=5):
+    """Crea una matriz tamano x tamano llena de '-'."""
+    return [["-" for _ in range(tamano)] for _ in range(tamano)]
+
+def colocar_elementos(tab_oculto):
+    """
+    Coloca 1 Tesoro (T) y 3 Trampas (X) en posiciones aleatorias sin superposición.
+    Devuelve la posición (fila, col) del Tesoro.
+    """
+    tam = len(tab_oculto)
+    # 4 posiciones únicas en el rango lineal [0, tam*tam)
+    pos_lineales = random.sample(range(tam * tam), 4)
+    t_lin, *x_lin = pos_lineales
+
+    # Mapear índices lineales -> (fila, columna)
+    t_f, t_c = divmod(t_lin, tam)
+    tab_oculto[t_f][t_c] = "T"
+    for p in x_lin:
+        f, c = divmod(p, tam)
+        tab_oculto[f][c] = "X"
+
+    return (t_f, t_c)
+
+def imprimir_tablero(tablero):
+    """Imprime la matriz separada por espacios."""
+    for fila in tablero:
+        print(" ".join(fila))
+
+def juego_busqueda_tesoro(intentos=5):
+    """
+    Juego: usuario ingresa coordenadas (0-4, 0-4).
+    - T: gana y termina
+    - X: pierde y termina
+    - '-': resta 1 intento y continúa
+    Al final, revela el tablero con todas las T y X.
+    """
+    tam = 5
+    # Tablero que ve el usuario (opcional si quisieras ir marcando intentos)
+    visible = crear_tablero(tam)
+    # Tablero oculto con T y X (la "verdad" del juego)
+    oculto = crear_tablero(tam)
+    t_f, t_c = colocar_elementos(oculto)
+
+    print("\nBÚSQUEDA DEL TESORO (5x5)")
+    print("Tienes", intentos, "intentos. Ingresa fila y columna (0 a 4). Ej: 2 3\n")
+
+    visitadas = set()
+
+    while intentos > 0:
+        entrada = input("Jugada (fila col): ").strip().split()
+        if len(entrada) != 2:
+            print("Formato inválido. Usa: fila col (ej: 1 4)")
+            continue
+
+        try:
+            f, c = map(int, entrada)
+        except ValueError:
+            print("Entrada inválida. Debes ingresar números (ej: 0 0).")
+            continue
+
+        if not (0 <= f < tam and 0 <= c < tam):
+            print("Coordenadas fuera de rango. Deben estar entre 0 y 4.")
+            continue
+
+        if (f, c) in visitadas:
+            print("Ya probaste esa casilla. Intenta otra.")
+            continue
+        visitadas.add((f, c))
+
+        # Resolver jugada según lo que hay en el tablero oculto
+        if oculto[f][c] == "T":
+            print("\n🎉 ¡Encontraste el tesoro! ¡Ganaste!")
+            break
+        elif oculto[f][c] == "X":
+            print("\n💥 ¡Pisaste una trampa! Perdiste.")
+            intentos = 0
+            break
+        else:
+            intentos -= 1
+            print(f"Nada aquí. Intentos restantes: {intentos}")
+
+    # Fin del juego: revelar la solución
+    print("\nTablero final (T = Tesoro, X = Trampas):")
+    imprimir_tablero(oculto)
+
+if __name__ == "__main__":
+    # Descomenta para jugar:
+    # juego_busqueda_tesoro(intentos=5)
+    pass
