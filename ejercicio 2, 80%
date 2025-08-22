@@ -71,10 +71,10 @@ def juego_busqueda_tesoro(intentos=5):
 
         # Resolver jugada según lo que hay en el tablero oculto
         if oculto[f][c] == "T":
-            print("\n🎉 ¡Encontraste el tesoro! ¡Ganaste!")
+            print("\n ¡Encontraste el tesoro! ¡Ganaste!")
             break
         elif oculto[f][c] == "X":
-            print("\n💥 ¡Pisaste una trampa! Perdiste.")
+            print("\n ¡Pisaste una trampa! Perdiste.")
             intentos = 0
             break
         else:
