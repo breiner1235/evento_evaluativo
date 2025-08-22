@@ -1,0 +1,60 @@
+class Vehiculo:
+    def __init__(self, marca, modelo, color, velocidad_max, encendido=False):
+        self.marca = marca
+        self.modelo = modelo
+        self.color = color
+        self.velocidad_max = velocidad_max
+        self.encendido = encendido  
+
+    def encender(self):
+        if not self.encendido:
+            self.encendido = True
+            print(f"El vehículo {self.marca} {self.modelo} está encendido.")
+        else:
+            print(f"El vehículo {self.marca} {self.modelo} ya estaba encendido.")
+
+    def apagar(self):
+        if self.encendido:
+            self.encendido = False
+            print(f"El vehículo {self.marca} {self.modelo} está apagado.")
+        else:
+            print(f"El vehículo {self.marca} {self.modelo} ya estaba apagado.")
+
+        # metodo no heredado 
+    def describir(self):
+        return f"{self.marca} {self.modelo}, color {self.color}, velocidad máxima {self.velocidad_max} km/h."
+
+
+class Auto(Vehiculo):
+    def __init__(self, marca, modelo, color, velocidad_max, puertas):
+        super().__init__(marca, modelo, color, velocidad_max)
+        self.puertas = puertas
+
+    def tocar_pito(self):
+        print(f"El {self.marca} {self.modelo} toca el pito: ¡Piiiiip!")
+
+
+class Moto(Vehiculo):
+    def __init__(self, marca, modelo, color, velocidad_max, tipo):
+        super().__init__(marca, modelo, color, velocidad_max)
+        self.tipo = tipo 
+
+    def hacer_caballito(self):
+        if self.encendido:
+            print(f"La moto {self.marca} {self.modelo} hace un caballito.")
+        else:
+            print(f"La moto {self.marca} {self.modelo} está apagada, no puede hacer caballito.")
+
+
+# Ejemplo de uso
+carro = Auto("Mazda", "cx-90", "negro mate", 180, 4)
+moto = Moto("africa twin", "1000", "gris", 240, "adventur")
+
+carro.encender()
+print(carro.describir())  # Método heredado sin modificar
+carro.tocar_pito()
+
+moto.encender()
+print(moto.describir())  # Método heredado sin modificar
+moto.hacer_caballito()
+moto.apagar()
